@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { SetupScreen } from './components/SetupScreen';
 import { GameScreen } from './components/GameScreen';
 import { SummaryScreen } from './components/SummaryScreen';
-import { getAvailableWords } from './data/words';
+import { getAvailableWords, WordCategory } from './data/words';
 import './App.css';
 
 type Screen = 'setup' | 'game' | 'summary';
 
 interface GameSettings {
   allowedLetters: string[];
+  allowedCategories: WordCategory[];
   fontSize: number;
   wordCount: number;
   uppercaseOnly: boolean;
@@ -28,7 +29,7 @@ function App() {
   const [results, setResults] = useState<GameResult[]>([]);
 
   const handleStart = (newSettings: GameSettings) => {
-    const words = getAvailableWords(newSettings.allowedLetters);
+    const words = getAvailableWords(newSettings.allowedLetters, newSettings.allowedCategories);
     // Shuffle and slice
     const selectedWords = words
       .sort(() => 0.5 - Math.random())

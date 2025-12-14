@@ -1,13 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { CZECH_ALPHABET, getAvailableWords } from '../data/words';
+import React, { useRef, useState } from 'react';
+import { CZECH_ALPHABET, getAvailableWords, WordCategory } from '../data/words';
 import './SetupScreen.css';
 
 interface SetupScreenProps {
-  onStart: (settings: { allowedLetters: string[]; fontSize: number; wordCount: number; uppercaseOnly: boolean }) => void;
+  onStart: (settings: { allowedLetters: string[]; allowedCategories: WordCategory[]; fontSize: number; wordCount: number; uppercaseOnly: boolean }) => void;
 }
 
 export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
   const [selectedLetters, setSelectedLetters] = useState<string[]>(['A', 'Á', 'E', 'É', 'I', 'Í', 'J', 'L', 'M', 'O', 'Ó', 'P', 'S', 'T', 'U', 'Ú', 'Ů']);
+  const [selectedCategories, setSelectedCategories] = useState<WordCategory[]>(['noun', 'adjective', 'verb', 'conjunction']);
   const fontSize = 3; // Fixed value
   const [wordCount, setWordCount] = useState<number>(10);
   const [uppercaseOnly, setUppercaseOnly] = useState<boolean>(true);
@@ -30,6 +31,17 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
       setSelectedLetters([]);
     } else {
       setSelectedLetters(CZECH_ALPHABET);
+    }
+  };
+
+  const toggleCategory = (category: WordCategory) => {
+    if (selectedCategories.includes(category)) {
+      // Prevent unselecting the last category
+      if (selectedCategories.length > 1) {
+        setSelectedCategories(prev => prev.filter(c => c !== category));
+      }
+    } else {
+      setSelectedCategories(prev => [...prev, category]);
     }
   };
 
@@ -94,7 +106,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
   // But if we tab out, we might want to clear visual focus?
   // Actually, visual focus only matters when container is focused.
   
-  const availableWords = getAvailableWords(selectedLetters);
+  const availableWords = getAvailableWords(selectedLetters, selectedCategories);
 
   return (
     <div className="setup-container">
@@ -140,7 +152,45 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
       </div>
 
       <div className="section">
-        <h2>2. Nastavení slov</h2>
+        <h2>2. Druh slov</h2>
+        <div className="categories-selector">
+          <label className="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              checked={selectedCategories.includes('noun')} 
+              onChange={() => toggleCategory('noun')}
+            />
+            <span>Podstatná jména</span>
+          </label>
+          <label className="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              checked={selectedCategories.includes('adjective')} 
+              onChange={() => toggleCategory('adjective')}
+            />
+            <span>Přídavná jména</span>
+          </label>
+          <label className="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              checked={selectedCategories.includes('verb')} 
+              onChange={() => toggleCategory('verb')}
+            />
+            <span>Slovesa</span>
+          </label>
+          <label className="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              checked={selectedCategories.includes('conjunction')} 
+              onChange={() => toggleCategory('conjunction')}
+            />
+            <span>Spojky</span>
+          </label>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2>3. Nastavení hry</h2>
         
         <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '15px' }}>
           <input 
@@ -212,7 +262,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
         <button 
           className="start-btn mc-button"
           disabled={availableWords.length === 0}
-          onClick={() => onStart({ allowedLetters: selectedLetters, fontSize, wordCount, uppercaseOnly })}
+          onClick={() => onStart({ allowedLetters: selectedLetters, allowedCategories: selectedCategories, fontSize, wordCount, uppercaseOnly })}
         >
           Spustit hru
         </button>
