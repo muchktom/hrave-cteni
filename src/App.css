@@ -5,6 +5,10 @@
   text-align: center;
   border-bottom: 4px solid var(--mc-stone);
   box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 840px; /* Matching SetupScreen max-width (800px + padding/border) */
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .app-title {
