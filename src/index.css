@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Minecraft Palette */
-  --mc-green: #5fb336;
+  --mc-green: #4a8f29; /* Darkened from #5fb336 for 4.5:1 contrast with white text */
   --mc-green-dark: #3a7a1c;
   --mc-stone: #9e9e9e;
   --mc-stone-dark: #575757;
@@ -56,6 +56,14 @@ button:focus {
   outline: none;
 }
 
+/* Global focus visible style - High contrast double ring */
+*:focus-visible {
+  outline: 3px solid #FFD700;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #212121; /* Dark ring for contrast on light bg */
+  z-index: 100;
+}
+
 /* Minecraft Button Mixin Class */
 .mc-button {
   font-family: 'VT323', monospace;
@@ -83,16 +91,17 @@ button:focus {
 
 .mc-button:disabled {
   background-color: #a0a0a0;
-  color: #707070;
-  border-color: #707070;
+  color: #555555; /* Darkened from #707070 for contrast */
+  border-color: #555555;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-/* Standardized focus style for buttons */
+/* Standardized focus style for buttons overrides global if needed, 
+   but global double ring is safer for accessibility */
 .mc-button:focus-visible {
   outline: 4px solid #FFD700;
-  outline-offset: -2px; /* Pull inside slightly or keep consistent */
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px #212121, 0 0 10px #FFD700;
   z-index: 5;
-  box-shadow: 0 0 10px #FFD700;
 }

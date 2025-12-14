@@ -30,7 +30,7 @@
   padding: 15px;
   box-sizing: border-box;
   background: #ddd;
-  border-bottom: 4px solid #999;
+  border-bottom: 4px solid #555; /* Increased contrast from #999 */
 }
 
 .exit-btn {

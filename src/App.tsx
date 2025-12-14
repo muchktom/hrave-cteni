@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SetupScreen } from './components/SetupScreen';
 import { GameScreen } from './components/GameScreen';
 import { SummaryScreen } from './components/SummaryScreen';
@@ -52,24 +52,29 @@ function App() {
 
   return (
     <div className="app-container">
-      {screen === 'setup' && <SetupScreen onStart={handleStart} />}
-      
-      {screen === 'game' && settings && (
-        <GameScreen 
-          words={gameWords} 
-          fontSizeLevel={settings.fontSize}
-          uppercaseOnly={settings.uppercaseOnly}
-          onComplete={handleGameEnd}
-          onExit={handleRestart}
-        />
-      )}
+      <header className="app-header">
+        <span className="app-title">Hravé čtení</span>
+      </header>
+      <main>
+        {screen === 'setup' && <SetupScreen onStart={handleStart} />}
+        
+        {screen === 'game' && settings && (
+          <GameScreen 
+            words={gameWords} 
+            fontSizeLevel={settings.fontSize}
+            uppercaseOnly={settings.uppercaseOnly}
+            onComplete={handleGameEnd}
+            onExit={handleRestart}
+          />
+        )}
 
-      {screen === 'summary' && (
-        <SummaryScreen 
-          results={results} 
-          onRestart={handleRestart} 
-        />
-      )}
+        {screen === 'summary' && (
+          <SummaryScreen 
+            results={results} 
+            onRestart={handleRestart} 
+          />
+        )}
+      </main>
     </div>
   );
 }

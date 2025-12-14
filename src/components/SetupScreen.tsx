@@ -232,22 +232,22 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
 
       <div className="section">
         <h2>3. Nastavení hry</h2>
-        
-        <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <input 
-            type="checkbox" 
-            id="uppercaseCheck"
-            checked={uppercaseOnly}
-            onChange={(e) => setUppercaseOnly(e.target.checked)}
-            style={{ width: '30px', height: '30px' }}
-          />
-          <label htmlFor="uppercaseCheck" style={{ fontSize: '1.5rem', cursor: 'pointer', fontFamily: 'var(--font-reading)' }}>
-            Pouze velká písmena (např. PES)
-          </label>
-        </div>
+          
+          <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <input 
+              type="checkbox" 
+              id="uppercaseCheck"
+              checked={uppercaseOnly}
+              onChange={(e) => setUppercaseOnly(e.target.checked)}
+              style={{ width: '30px', height: '30px' }}
+            />
+            <label htmlFor="uppercaseCheck" style={{ fontSize: '1.5rem', cursor: 'pointer', fontFamily: 'var(--font-reading)' }}>
+              Pouze velká písmena (např. PES)
+            </label>
+          </div>
 
-        <h3 id="word-count-heading" style={{ fontSize: '1.8rem', marginTop: '0', marginBottom: '15px', color: 'var(--mc-text)', textTransform: 'uppercase', textShadow: '2px 2px 0px #ddd' }}>Počet slov ve hře</h3>
-        <div className="count-selector" role="radiogroup" aria-labelledby="word-count-heading">
+        <fieldset className="count-selector" style={{ border: 'none', padding: 0, margin: 0 }}>
+          <legend style={{ fontSize: '1.8rem', marginBottom: '15px', color: 'var(--mc-text)', textTransform: 'uppercase', textShadow: '2px 2px 0px #ddd', fontFamily: "'VT323', monospace", width: '100%' }}>Počet slov ve hře</legend>
           {[3, 5, 10, 15, 20, 30].map(count => (
             <label key={count} className="count-radio-wrapper">
               <input 
@@ -271,31 +271,32 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
               onChange={() => {}} // Focus on input handles selection
               className="count-radio-input"
             />
-            <div className="count-radio-visual" style={{ width: 'auto', padding: '0 15px', position: 'relative' }}>
-              <span style={{ marginRight: '10px' }}>Vlastní:</span>
-              <input 
-                type="number" 
-                min="1" 
-                max="50" 
-                value={wordCount}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value);
-                  if (!isNaN(val) && val > 0) setWordCount(val);
-                }}
-                className="custom-count-input"
-                style={{ 
-                  width: '60px', 
-                  fontSize: '1.5rem', 
-                  textAlign: 'center',
-                  fontFamily: 'var(--font-reading)',
-                  border: 'none',
-                  background: 'transparent',
-                  borderBottom: '2px solid #333'
-                }}
-              />
-            </div>
-          </label>
-        </div>
+              <div className="count-radio-visual" style={{ width: 'auto', padding: '0 15px', position: 'relative' }}>
+                <span style={{ marginRight: '10px' }}>Vlastní:</span>
+                <input 
+                  type="number" 
+                  min="1" 
+                  max="50" 
+                  value={wordCount}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    if (!isNaN(val) && val > 0) setWordCount(val);
+                  }}
+                  className="custom-count-input"
+                  style={{ 
+                    width: '60px', 
+                    fontSize: '1.5rem', 
+                    textAlign: 'center',
+                    fontFamily: 'var(--font-reading)',
+                    border: 'none',
+                    background: 'transparent',
+                    borderBottom: '2px solid #333'
+                  }}
+                  aria-label="Vlastní počet slov"
+                />
+              </div>
+            </label>
+        </fieldset>
       </div>
 
       <div className="footer">

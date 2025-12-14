@@ -27,6 +27,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
             fill={i < stars ? "#FFD700" : "none"} 
             color={i < stars ? "#FFD700" : "#555"}
             className="star-icon"
+            aria-hidden="true"
           />
         ))}
       </div>

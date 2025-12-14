@@ -1,6 +1,28 @@
-.app-container {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
+.app-header {
+  background-color: var(--mc-stone-dark);
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  border-bottom: 4px solid var(--mc-stone);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
 }
 
+.app-title {
+  font-family: 'VT323', monospace;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

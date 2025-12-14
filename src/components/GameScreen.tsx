@@ -233,6 +233,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ words, fontSizeLevel, up
           className={`mic-btn ${feedback === 'listening' ? 'pulsing' : 'active-ready'}`}
           onClick={toggleListening}
           disabled={feedback === 'success' || feedback === 'processing'}
+          aria-label={feedback === 'listening' ? 'Zastavit nahrávání' : 'Začít mluvit'}
         >
           {feedback === 'listening' ? <AudioLines size={48} /> : <Mic size={48} />}
           {feedback === 'listening' ? 'Stop' : 'Mluv'}
@@ -242,6 +243,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ words, fontSizeLevel, up
           className="icon-btn skip" 
           onClick={handleSkip} 
           title="Přeskočit"
+          aria-label="Přeskočit slovo"
           disabled={feedback === 'processing' || feedback === 'success'}
         >
           <SkipForward size={32} />
