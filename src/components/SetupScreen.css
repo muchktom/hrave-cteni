@@ -39,6 +39,10 @@
   margin-top: 20px;
 }
 
+.alphabet-grid:focus-visible, .categories-selector:focus-visible {
+  outline: none;
+}
+
 .letter-btn {
   aspect-ratio: 1;
   display: flex;
@@ -67,8 +71,11 @@
 }
 
 .letter-btn.focused {
-  outline: 4px solid #333;
-  z-index: 10;
+  position: relative;
+  z-index: 2;
+  outline: 4px solid #FFD700;
+  outline-offset: -4px;
+  box-shadow: 0 0 10px #FFD700;
 }
 
 .hint-text {
@@ -86,28 +93,39 @@
   margin-bottom: 20px;
 }
 
-.checkbox-wrapper {
+.category-option {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   cursor: pointer;
   font-family: var(--font-reading);
   font-size: 1.5rem;
-  padding: 10px 15px;
+  padding: 10px 25px;
   background: #fff;
   border: 2px solid #ccc;
-  transition: all 0.2s;
+  transition: all 0.1s;
+  user-select: none;
 }
 
-.checkbox-wrapper:hover {
+.category-option:hover {
   border-color: #888;
-  background: #f9f9f9;
 }
 
-.checkbox-wrapper input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
-  accent-color: var(--mc-green);
+.category-option.selected {
+  background: var(--mc-green);
+  color: white;
+  border-color: var(--mc-green-dark);
+  box-shadow: 2px 2px 0px var(--mc-green-dark);
+  transform: translate(-2px, -2px);
+}
+
+.category-option.focused {
+  position: relative;
+  z-index: 2;
+  outline: 4px solid #FFD700;
+  outline-offset: -4px;
+  box-shadow: 0 0 10px #FFD700;
 }
 
 .count-selector {
@@ -151,8 +169,32 @@
   transform: translate(-2px, -2px);
 }
 
-.count-radio-input:focus + .count-radio-visual {
-  outline: 3px solid #333;
+.count-radio-input:focus + .count-radio-visual,
+.count-radio-input:focus-visible + .count-radio-visual {
+  outline: 4px solid #FFD700;
+  outline-offset: -4px;
+  box-shadow: 0 0 10px #FFD700;
+  z-index: 5;
+}
+
+/* Uppercase Checkbox focus */
+#uppercaseCheck {
+  accent-color: var(--mc-green);
+  cursor: pointer;
+}
+
+#uppercaseCheck:focus-visible {
+  outline: 4px solid #FFD700;
+  outline-offset: 2px;
+  box-shadow: 0 0 10px #FFD700;
+}
+
+/* Custom count input focus */
+.custom-count-input:focus,
+.custom-count-input:focus-visible {
+  outline: 4px solid #FFD700 !important;
+  box-shadow: 0 0 10px #FFD700;
+  border-radius: 4px;
 }
 
 .footer {

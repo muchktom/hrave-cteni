@@ -18,6 +18,18 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
   const [isGridFocused, setIsGridFocused] = useState<boolean>(false);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  // Focus management for categories
+  const [focusedCategoryIndex, setFocusedCategoryIndex] = useState<number>(-1);
+  const [isCategoriesFocused, setIsCategoriesFocused] = useState<boolean>(false);
+  const categoriesRef = useRef<HTMLDivElement>(null);
+  
+  const allCategories: { id: WordCategory; label: string }[] = [
+    { id: 'noun', label: 'Podstatná jména' },
+    { id: 'adjective', label: 'Přídavná jména' },
+    { id: 'verb', label: 'Slovesa' },
+    { id: 'conjunction', label: 'Spojky' }
+  ];
+
   const toggleLetter = (letter: string) => {
     if (selectedLetters.includes(letter)) {
       setSelectedLetters(prev => prev.filter(l => l !== letter));
@@ -106,6 +118,39 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
   // But if we tab out, we might want to clear visual focus?
   // Actually, visual focus only matters when container is focused.
   
+  const handleCategoriesKeyDown = (e: React.KeyboardEvent) => {
+    if (!categoriesRef.current) return;
+
+    const total = allCategories.length;
+    let newIndex = focusedCategoryIndex;
+
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        e.preventDefault();
+        newIndex = focusedCategoryIndex + 1;
+        if (newIndex >= total) newIndex = 0;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        e.preventDefault();
+        newIndex = focusedCategoryIndex - 1;
+        if (newIndex < 0) newIndex = total - 1;
+        break;
+      case ' ':
+      case 'Enter':
+        e.preventDefault();
+        if (focusedCategoryIndex >= 0 && focusedCategoryIndex < total) {
+          toggleCategory(allCategories[focusedCategoryIndex].id);
+        }
+        return;
+      default:
+        return;
+    }
+
+    setFocusedCategoryIndex(newIndex);
+  };
+
   const availableWords = getAvailableWords(selectedLetters, selectedCategories);
 
   return (
@@ -153,39 +198,35 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStart }) => {
 
       <div className="section">
         <h2>2. Druh slov</h2>
-        <div className="categories-selector">
-          <label className="checkbox-wrapper">
-            <input 
-              type="checkbox" 
-              checked={selectedCategories.includes('noun')} 
-              onChange={() => toggleCategory('noun')}
-            />
-            <span>Podstatná jména</span>
-          </label>
-          <label className="checkbox-wrapper">
-            <input 
-              type="checkbox" 
-              checked={selectedCategories.includes('adjective')} 
-              onChange={() => toggleCategory('adjective')}
-            />
-            <span>Přídavná jména</span>
-          </label>
-          <label className="checkbox-wrapper">
-            <input 
-              type="checkbox" 
-              checked={selectedCategories.includes('verb')} 
-              onChange={() => toggleCategory('verb')}
-            />
-            <span>Slovesa</span>
-          </label>
-          <label className="checkbox-wrapper">
-            <input 
-              type="checkbox" 
-              checked={selectedCategories.includes('conjunction')} 
-              onChange={() => toggleCategory('conjunction')}
-            />
-            <span>Spojky</span>
-          </label>
+        <div 
+          className="categories-selector"
+          ref={categoriesRef}
+          role="listbox"
+          aria-label="Výběr druhu slov"
+          aria-multiselectable="true"
+          tabIndex={0}
+          onKeyDown={handleCategoriesKeyDown}
+          onFocus={() => {
+            setIsCategoriesFocused(true);
+            if (focusedCategoryIndex === -1) setFocusedCategoryIndex(0);
+          }}
+          onBlur={() => setIsCategoriesFocused(false)}
+        >
+          {allCategories.map((cat, index) => (
+            <div
+              key={cat.id}
+              role="option"
+              aria-selected={selectedCategories.includes(cat.id)}
+              className={`category-option ${selectedCategories.includes(cat.id) ? 'selected' : ''} ${focusedCategoryIndex === index && isCategoriesFocused ? 'focused' : ''}`}
+              onClick={() => {
+                setFocusedCategoryIndex(index);
+                toggleCategory(cat.id);
+                categoriesRef.current?.focus();
+              }}
+            >
+              {cat.label}
+            </div>
+          ))}
         </div>
       </div>
 
