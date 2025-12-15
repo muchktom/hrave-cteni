@@ -1,14 +1,15 @@
 import React from 'react';
-import { Star, Home } from 'lucide-react';
+import { Star, Home, Zap } from 'lucide-react';
 import './SummaryScreen.css';
 
 interface SummaryScreenProps {
   results: { word: string; success: boolean; attempts: number; readingTime: number }[];
   onRestart: () => void;
+  onQuickTest?: () => void;
   uppercaseOnly: boolean;
 }
 
-export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart, uppercaseOnly }) => {
+export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart, onQuickTest, uppercaseOnly }) => {
   const formatWord = (word: string) => uppercaseOnly ? word.toUpperCase() : word;
 
   const correctCount = results.filter(r => r.success).length;
@@ -37,19 +38,6 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
 
       <h2>Přečteno: {correctCount} z {results.length}</h2>
 
-      {incorrect.length > 0 && (
-        <div className="mistakes-section">
-          <h3>Slova k procvičení:</h3>
-          <div className="words-grid">
-            {incorrect.map((res, i) => (
-              <div key={i} className="mistake-card">
-                {formatWord(res.word)}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       <div className="table-container">
         <h3>Detailní přehled:</h3>
         <table className="results-table">
@@ -77,6 +65,21 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
       )}
 
       <div className="actions">
+        {incorrect.length > 0 && onQuickTest && (
+          <div className="tooltip-container">
+            <button 
+              className="action-btn secondary mc-button" 
+              onClick={onQuickTest}
+              aria-describedby="quick-test-desc"
+            >
+              <Zap size={24} />
+              Rychlé procvičení
+            </button>
+            <div id="quick-test-desc" role="tooltip" className="tooltip">
+              Procvičíš si slova, která ti dělala potíže.
+            </div>
+          </div>
+        )}
         <button className="action-btn primary mc-button" onClick={onRestart}>
           <Home size={24} />
           Zpět na začátek

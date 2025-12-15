@@ -114,8 +114,10 @@
 .actions {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   margin-top: 40px;
+  flex-wrap: wrap;
 }
 
 .action-btn {
@@ -133,4 +135,54 @@
   border-color: var(--mc-green-dark);
   border-left-color: #8edc6e;
   border-top-color: #8edc6e;
+}
+
+.action-btn.secondary {
+  background: #ff9800;
+  color: white;
+  border-color: #f57c00;
+  border-left-color: #ffb74d;
+  border-top-color: #ffb74d;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 12px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  width: 220px;
+  font-size: 1rem;
+  font-family: sans-serif;
+  pointer-events: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  line-height: 1.4;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip,
+.tooltip-container:focus-within .tooltip {
+  opacity: 1;
 }

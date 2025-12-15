@@ -50,6 +50,39 @@ function App() {
     setScreen('setup');
   };
 
+  const handleQuickTest = () => {
+    if (!settings) return;
+
+    const incorrectWords = results
+      .filter(r => !r.success)
+      .map(r => r.word);
+
+    // Filter unique incorrect words just in case
+    const uniqueIncorrect = [...new Set(incorrectWords)];
+    
+    let newGameWords: string[] = [];
+
+    if (uniqueIncorrect.length >= 10) {
+      newGameWords = uniqueIncorrect;
+    } else {
+      const pool = getAvailableWords(settings.allowedLetters, settings.allowedCategories);
+      // Exclude words that are already in the incorrect list
+      const availableFillers = pool.filter(w => !uniqueIncorrect.includes(w));
+      
+      const needed = 10 - uniqueIncorrect.length;
+      const fillers = availableFillers
+        .sort(() => 0.5 - Math.random())
+        .slice(0, needed);
+        
+      newGameWords = [...uniqueIncorrect, ...fillers];
+    }
+
+    // Shuffle final list
+    setGameWords(newGameWords.sort(() => 0.5 - Math.random()));
+    setResults([]);
+    setScreen('game');
+  };
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -72,6 +105,7 @@ function App() {
           <SummaryScreen 
             results={results} 
             onRestart={handleRestart} 
+            onQuickTest={handleQuickTest}
             uppercaseOnly={settings.uppercaseOnly}
           />
         )}
