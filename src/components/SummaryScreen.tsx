@@ -5,9 +5,12 @@ import './SummaryScreen.css';
 interface SummaryScreenProps {
   results: { word: string; success: boolean; attempts: number; readingTime: number }[];
   onRestart: () => void;
+  uppercaseOnly: boolean;
 }
 
-export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart }) => {
+export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart, uppercaseOnly }) => {
+  const formatWord = (word: string) => uppercaseOnly ? word.toUpperCase() : word;
+
   const correctCount = results.filter(r => r.success).length;
   const incorrect = results.filter(r => !r.success);
   
@@ -40,7 +43,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
           <div className="words-grid">
             {incorrect.map((res, i) => (
               <div key={i} className="mistake-card">
-                {res.word}
+                {formatWord(res.word)}
               </div>
             ))}
           </div>
@@ -59,7 +62,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
           <tbody>
             {results.map((r, i) => (
               <tr key={i} className={r.success ? 'correct' : 'incorrect'}>
-                <td>{r.word} {r.success ? '✅' : '❌'}</td>
+                <td>{formatWord(r.word)} {r.success ? '✅' : '❌'}</td>
                 <td className="time-cell">{r.readingTime}s</td>
               </tr>
             ))}

@@ -68,10 +68,11 @@ function App() {
           />
         )}
 
-        {screen === 'summary' && (
+        {screen === 'summary' && settings && (
           <SummaryScreen 
             results={results} 
             onRestart={handleRestart} 
+            uppercaseOnly={settings.uppercaseOnly}
           />
         )}
       </main>
