@@ -1,3 +1,11 @@
+.app-container {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .app-header {
   background-color: var(--mc-stone-dark);
   color: white;
@@ -6,8 +14,12 @@
   border-bottom: 4px solid var(--mc-stone);
   box-shadow: 0 4px 0 rgba(0,0,0,0.2);
   width: 100%;
-  max-width: 840px; /* Matching SetupScreen max-width (800px + padding/border) */
-  margin: 0 auto;
+  /* Removed max-width and margin auto to let parent control width */
+  box-sizing: border-box;
+}
+
+main {
+  width: 100%;
   box-sizing: border-box;
 }
 

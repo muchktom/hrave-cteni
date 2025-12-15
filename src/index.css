@@ -27,11 +27,14 @@
   --font-reading: 'Lexend', sans-serif;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
   min-height: 100vh;
   background-color: #e2f0d9; /* Light green tint */
   background-image: 
