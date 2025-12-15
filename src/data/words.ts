@@ -62,7 +62,7 @@ const VERBS: string[] = [
 ];
 
 const CONJUNCTIONS: string[] = [
-  "A", "I", "Ale", "Nebo", "Když", "Že", "Aby", "Protože", 
+  "Ale", "Nebo", "Když", "Že", "Aby", "Protože", 
   "Kdyby", "Jako", "Ani", "Jenže", "Ačkoliv", "Dokud", 
   "Než", "Však", "Tedy", "Tudíž"
 ];
