@@ -17,7 +17,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ words, fontSizeLevel, up
   const [currentIndex, setCurrentIndex] = useState(0);
   const [feedback, setFeedback] = useState<FeedbackState>('idle');
   const [results, setResults] = useState<{ word: string; success: boolean; attempts: number; readingTime: number }[]>([]);
-  const [attempts, setAttempts] = useState(0);
   const attemptsRef = useRef(0);
   const [lastHeard, setLastHeard] = useState<string>("");
   const currentWordTimeRef = useRef(0);
@@ -78,7 +77,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ words, fontSizeLevel, up
                  if (!cleanChunk.includes(target)) {
                      // Failed attempt
                      attemptsRef.current += 1;
-                     setAttempts(attemptsRef.current); // Sync for any UI updates if needed
                  }
              }
         }
@@ -170,7 +168,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ words, fontSizeLevel, up
 
     if (currentIndex < words.length - 1) {
       setCurrentIndex(prev => prev + 1);
-      setAttempts(0);
       attemptsRef.current = 0;
       setFeedback('idle');
       setLastHeard("");
@@ -194,7 +191,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ words, fontSizeLevel, up
     } else {
       try {
         attemptsRef.current += 1;
-        setAttempts(attemptsRef.current);
         recognitionRef.current.start();
       } catch (e) {
         // Already started
