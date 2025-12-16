@@ -14,6 +14,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
 
   const correctCount = results.filter(r => r.success).length;
   const incorrect = results.filter(r => !r.success);
+  const wordsToPractice = results.filter(r => !r.success || r.attempts > 1);
   
   // Calculate star rating (1-3 stars)
   const percentage = (correctCount / results.length) * 100;
@@ -44,6 +45,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
           <thead>
             <tr>
               <th>Slovo</th>
+              <th style={{ textAlign: 'center' }}>Pokusy</th>
               <th style={{ textAlign: 'right' }}>Čas čtení</th>
             </tr>
           </thead>
@@ -51,6 +53,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
             {results.map((r, i) => (
               <tr key={i} className={r.success ? 'correct' : 'incorrect'}>
                 <td>{formatWord(r.word)} {r.success ? '✅' : '❌'}</td>
+                <td style={{ textAlign: 'center' }}>{r.attempts}</td>
                 <td className="time-cell">{r.readingTime}s</td>
               </tr>
             ))}
@@ -65,7 +68,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({ results, onRestart
       )}
 
       <div className="actions">
-        {incorrect.length > 0 && onQuickTest && (
+        {wordsToPractice.length > 0 && onQuickTest && (
           <div className="tooltip-container">
             <button 
               className="action-btn secondary mc-button" 

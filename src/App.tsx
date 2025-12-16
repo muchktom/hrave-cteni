@@ -53,28 +53,29 @@ function App() {
   const handleQuickTest = () => {
     if (!settings) return;
 
-    const incorrectWords = results
-      .filter(r => !r.success)
+    // Words that were incorrect OR took more than 1 attempt
+    const problemWords = results
+      .filter(r => !r.success || r.attempts > 1)
       .map(r => r.word);
 
-    // Filter unique incorrect words just in case
-    const uniqueIncorrect = [...new Set(incorrectWords)];
+    // Filter unique problem words just in case
+    const uniqueProblemWords = [...new Set(problemWords)];
     
     let newGameWords: string[] = [];
 
-    if (uniqueIncorrect.length >= 10) {
-      newGameWords = uniqueIncorrect;
+    if (uniqueProblemWords.length >= 10) {
+      newGameWords = uniqueProblemWords;
     } else {
       const pool = getAvailableWords(settings.allowedLetters, settings.allowedCategories);
-      // Exclude words that are already in the incorrect list
-      const availableFillers = pool.filter(w => !uniqueIncorrect.includes(w));
+      // Exclude words that are already in the problem list
+      const availableFillers = pool.filter(w => !uniqueProblemWords.includes(w));
       
-      const needed = 10 - uniqueIncorrect.length;
+      const needed = 10 - uniqueProblemWords.length;
       const fillers = availableFillers
         .sort(() => 0.5 - Math.random())
         .slice(0, needed);
         
-      newGameWords = [...uniqueIncorrect, ...fillers];
+      newGameWords = [...uniqueProblemWords, ...fillers];
     }
 
     // Shuffle final list
