@@ -61,22 +61,23 @@ function App() {
     // Filter unique problem words just in case
     const uniqueProblemWords = [...new Set(problemWords)];
     
+    // Limit to max 10 words
+    const wordsToTest = uniqueProblemWords
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 10);
+    
     let newGameWords: string[] = [];
 
-    if (uniqueProblemWords.length >= 10) {
-      newGameWords = uniqueProblemWords;
-    } else {
-      const pool = getAvailableWords(settings.allowedLetters, settings.allowedCategories);
-      // Exclude words that are already in the problem list
-      const availableFillers = pool.filter(w => !uniqueProblemWords.includes(w));
+    const pool = getAvailableWords(settings.allowedLetters, settings.allowedCategories);
+    // Exclude words that are already in the problem list
+    const availableFillers = pool.filter(w => !wordsToTest.includes(w));
       
-      const needed = 10 - uniqueProblemWords.length;
-      const fillers = availableFillers
-        .sort(() => 0.5 - Math.random())
-        .slice(0, needed);
+    const needed = 10 - wordsToTest.length;
+    const fillers = availableFillers
+      .sort(() => 0.5 - Math.random())
+      .slice(0, needed);
         
-      newGameWords = [...uniqueProblemWords, ...fillers];
-    }
+    newGameWords = [...wordsToTest, ...fillers];
 
     // Shuffle final list
     setGameWords(newGameWords.sort(() => 0.5 - Math.random()));
